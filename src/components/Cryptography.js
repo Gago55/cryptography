@@ -6,7 +6,9 @@ import { FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/
 import { setInputTextAC } from '../redux/appReducer'
 
 const Cryptography = (props) => {
-    const [algorithm, setAlgorithm] = useState('des')
+    const [algorithm, setAlgorithm] = useState('des')    
+    const [result , setResult] = useState('')
+
 
     const handleInputChange = event => {
         props.setInputText(event.target.value)
@@ -14,6 +16,10 @@ const Cryptography = (props) => {
 
     const handleSelectChange = event => {
         setAlgorithm(event.target.value)
+    }
+
+    const handleButtonClick = () => {
+        
     }
 
     return (
@@ -30,7 +36,19 @@ const Cryptography = (props) => {
                     <MenuItem value={'des'}>DES</MenuItem>
                     <MenuItem value={'gdes'}>GDES</MenuItem>
                 </Select>
-            </FormControl>
+            </FormControl><br/>
+            <Button style={{margin:'15px'}} onClick={handleButtonClick}>Encrypt</Button><br/>
+            <TextField
+                id="outlined-read-only-input"
+                label="Result"
+                defaultValue={result}
+                // className={classes.textField}
+                margin="normal"
+                InputProps={{
+                    readOnly: true,
+                }}
+                variant="outlined"
+            />
         </div>
     )
 }
