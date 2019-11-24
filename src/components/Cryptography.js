@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styles from './Cryptography.module.css'
 
 const Cryptography = (props) => {
     return(
-        <div>
+        <div className={styles.mainDiv}>
             {props.text}
         </div>
     )

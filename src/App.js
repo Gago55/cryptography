@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './redux/store';
 import Cryptography from './components/Cryptography';
 
 function App() {
   return (
     <Provider store={store}>
-      <Cryptography />
+      <div className='root'>
+        <Cryptography />
+      </div>
     </Provider>
   )
 }
