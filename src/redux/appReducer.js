@@ -1,4 +1,4 @@
-
+const SETINPUTTEXT = './app/SETINPUTTEXT'
 
 let initialState ={
     inputText : ""
@@ -6,8 +6,14 @@ let initialState ={
 
 export default (state = initialState,action) => {
     switch(action.type){
-
+        case SETINPUTTEXT :
+            return{
+                ...state,
+                inputText : action.text
+            }
         default:
             return state
     }
 }
+
+export const setInputTextAC = text => ({type:SETINPUTTEXT , text})

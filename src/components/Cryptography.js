@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import styles from './Cryptography.module.css'
+import TextField from '@material-ui/core/TextField'
+import { FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core'
+import { setInputTextAC } from '../redux/appReducer'
 
 const Cryptography = (props) => {
-    return(
+
+    const handleInputChange = event => {
+        props.setInputText(event.target.value)
+    }
+
+    return (
         <div className={styles.mainDiv}>
-            {props.text}
+            <TextField id="standard-basic" label="Input Text" value={props.inputText} onChange={handleInputChange} />
         </div>
     )
 }
 let mapStateToProps = state => ({
-    text : state.app.inputText
+    inputText: state.app.inputText
 })
-export default connect(mapStateToProps , undefined)(Cryptography)
+
+let mapDispatchToProps = dispatch => ({
+    setInputText: (text) => {
+        dispatch(setInputTextAC(text))
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cryptography)
