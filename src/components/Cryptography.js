@@ -4,10 +4,12 @@ import styles from './Cryptography.module.css'
 import TextField from '@material-ui/core/TextField'
 import { FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core'
 import { setInputTextAC } from '../redux/appReducer'
+import CryptoJS from 'crypto-js'
 
 const Cryptography = (props) => {
-    const [algorithm, setAlgorithm] = useState('des')    
-    const [result , setResult] = useState('')
+    const [algorithm, setAlgorithm] = useState('des')
+    const [result, setResult] = useState('')
+    const [key, setKey] = useState('')
 
 
     const handleInputChange = event => {
@@ -18,8 +20,15 @@ const Cryptography = (props) => {
         setAlgorithm(event.target.value)
     }
 
+    const handleKeyInputChange = event => {
+        setKey(event.target.value)
+    }
+
     const handleButtonClick = () => {
-        
+        if (algorithm === 'des') {
+            let encryptedText = CryptoJS.DES.encrypt(props.inputText, key)
+            setResult(encryptedText)
+        }
     }
 
     return (
@@ -36,14 +45,16 @@ const Cryptography = (props) => {
                     <MenuItem value={'des'}>DES</MenuItem>
                     <MenuItem value={'gdes'}>GDES</MenuItem>
                 </Select>
-            </FormControl><br/>
-            <Button style={{margin:'15px'}} onClick={handleButtonClick}>Encrypt</Button><br/>
+            </FormControl><br />
+            <TextField id="standard-basic" label="Input Key" value={key} onChange={handleKeyInputChange} /><br />
+            <Button style={{ margin: '15px' }} onClick={handleButtonClick}>Encrypt</Button><br />
             <TextField
                 id="outlined-read-only-input"
                 label="Result"
-                defaultValue={result}
+                value={result}
                 // className={classes.textField}
                 margin="normal"
+                multiline
                 InputProps={{
                     readOnly: true,
                 }}
