@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import { FormControl, InputLabel, Select, MenuItem, Button } from '@material-ui/core'
 import { setInputTextAC } from '../redux/appReducer'
 import CryptoJS from 'crypto-js'
+import GDES from './GDES'
 
 const Cryptography = (props) => {
     const [algorithm, setAlgorithm] = useState('des')
@@ -24,11 +25,16 @@ const Cryptography = (props) => {
         setKey(event.target.value)
     }
 
-    const handleButtonClick = () => {
+    const handleButtonClick = () => {          
         if (algorithm === 'des') {
             let encryptedText = CryptoJS.DES.encrypt(props.inputText, key)
             setResult(encryptedText)
         }
+        else if(algorithm === 'gdes'){
+            let g = new GDES(props.inputText, key)
+            setResult(g.encryptedTextHex)
+        }
+   
     }
 
     return (
