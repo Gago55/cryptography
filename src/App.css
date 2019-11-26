@@ -4,3 +4,8 @@
   height: 100%;
   background-image: linear-gradient(135deg , rgb(141, 141, 141) , white);
 }
+
+a{
+  margin: 10px;
+  color: white;
+}
