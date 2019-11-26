@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import styles from './Cryptography.module.css'
 import TextField from '@material-ui/core/TextField'
@@ -12,6 +12,16 @@ const Cryptography = (props) => {
     const [result, setResult] = useState('')
     const [logs, setLogs] = useState('')
     const [key, setKey] = useState('')
+    const [needKey, setNeedKey] = useState(true)
+
+
+    useEffect( ()=>{
+        if(algorithm === 'md5' || algorithm === 'sha1' || algorithm === 'sha256'  || algorithm === 'sha512'){
+            setNeedKey(false)
+        }else{
+            setNeedKey(true)
+        }   
+    })
 
 
     const handleInputChange = event => {
@@ -67,6 +77,38 @@ const Cryptography = (props) => {
             let duration = (endTime - startTime).toFixed(2)
             setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
+        else if(algorithm === 'md5'){
+            let startTime = performance.now()
+            let hash = CryptoJS.MD5(props.inputText)
+            let endTime = performance.now() 
+            setResult(hash)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+        }
+        else if(algorithm === 'sha1'){
+            let startTime = performance.now()
+            let hash = CryptoJS.SHA1(props.inputText)
+            let endTime = performance.now() 
+            setResult(hash)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+        }
+        else if(algorithm === 'sha256'){
+            let startTime = performance.now()
+            let hash = CryptoJS.SHA256(props.inputText)
+            let endTime = performance.now() 
+            setResult(hash)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+        }
+        else if(algorithm === 'sha512'){
+            let startTime = performance.now()
+            let hash = CryptoJS.SHA512(props.inputText)
+            let endTime = performance.now() 
+            setResult(hash)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+        }
    
     }
 
@@ -86,9 +128,15 @@ const Cryptography = (props) => {
                     <MenuItem value={'gdes'}>GDES</MenuItem>
                     <MenuItem value={'aes'}>AES</MenuItem>
                     <MenuItem value={'rabbit'}>Rabbit</MenuItem>
+                    <MenuItem value={'md5'}>MD5</MenuItem>
+                    <MenuItem value={'sha1'}>SHA1</MenuItem>
+                    <MenuItem value={'sha256'}>SHA256</MenuItem>
+                    <MenuItem value={'sha512'}>SHA512</MenuItem>
                 </Select>
             </FormControl><br />
-            <TextField id="standard-basic" label="Input Key" value={key} onChange={handleKeyInputChange} /><br />
+            {  
+                needKey && <TextField id="standard-basic" label="Input Key" value={key} onChange={handleKeyInputChange} />
+            }<br />
             <Button style={{ margin: '15px' }} onClick={handleButtonClick}>Encrypt</Button><br />
             <TextField
                 id="outlined-read-only-input"
