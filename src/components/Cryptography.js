@@ -33,7 +33,7 @@ const Cryptography = (props) => {
             let endTime = performance.now() 
             setResult(encryptedText)
             let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
         else if(algorithm === 'tripledes'){
             let startTime = performance.now()
@@ -41,7 +41,7 @@ const Cryptography = (props) => {
             let endTime = performance.now() 
             setResult(encryptedText)
             let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
         else if(algorithm === 'gdes'){
             let startTime = performance.now()
@@ -49,7 +49,23 @@ const Cryptography = (props) => {
             let endTime = performance.now() 
             setResult(g.encryptedTextHex)
             let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${g.encryptedTextHex}" Duration ${duration}ms \n`)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${g.encryptedTextHex}" Duration ${duration}ms \n`)
+        }
+        else if(algorithm === 'aes'){
+            let startTime = performance.now()
+            let encryptedText = CryptoJS.AES.encrypt(props.inputText, key)
+            let endTime = performance.now() 
+            setResult(encryptedText)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+        }
+        else if(algorithm === 'rabbit'){
+            let startTime = performance.now()
+            let encryptedText = CryptoJS.Rabbit.encrypt(props.inputText, key)
+            let endTime = performance.now() 
+            setResult(encryptedText)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
    
     }
@@ -68,6 +84,8 @@ const Cryptography = (props) => {
                     <MenuItem value={'des'}>DES</MenuItem>
                     <MenuItem value={'tripledes'}>TripleDES</MenuItem>
                     <MenuItem value={'gdes'}>GDES</MenuItem>
+                    <MenuItem value={'aes'}>AES</MenuItem>
+                    <MenuItem value={'rabbit'}>Rabbit</MenuItem>
                 </Select>
             </FormControl><br />
             <TextField id="standard-basic" label="Input Key" value={key} onChange={handleKeyInputChange} /><br />
