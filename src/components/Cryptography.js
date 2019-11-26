@@ -30,6 +30,10 @@ const Cryptography = (props) => {
             let encryptedText = CryptoJS.DES.encrypt(props.inputText, key)
             setResult(encryptedText)
         }
+        else if(algorithm === 'tripledes'){
+            let encryptedText = CryptoJS.TripleDES.encrypt(props.inputText, key)
+            setResult(encryptedText)
+        }
         else if(algorithm === 'gdes'){
             let g = new GDES(props.inputText, key)
             setResult(g.encryptedTextHex)
@@ -49,6 +53,7 @@ const Cryptography = (props) => {
                     onChange={handleSelectChange}
                 >
                     <MenuItem value={'des'}>DES</MenuItem>
+                    <MenuItem value={'tripledes'}>TripleDES</MenuItem>
                     <MenuItem value={'gdes'}>GDES</MenuItem>
                 </Select>
             </FormControl><br />
