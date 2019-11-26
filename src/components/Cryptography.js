@@ -10,6 +10,7 @@ import GDES from './GDES'
 const Cryptography = (props) => {
     const [algorithm, setAlgorithm] = useState('des')
     const [result, setResult] = useState('')
+    const [logs, setLogs] = useState('')
     const [key, setKey] = useState('')
 
 
@@ -27,16 +28,28 @@ const Cryptography = (props) => {
 
     const handleButtonClick = () => {          
         if (algorithm === 'des') {
+            let startTime = performance.now()
             let encryptedText = CryptoJS.DES.encrypt(props.inputText, key)
+            let endTime = performance.now() 
             setResult(encryptedText)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
         else if(algorithm === 'tripledes'){
+            let startTime = performance.now()
             let encryptedText = CryptoJS.TripleDES.encrypt(props.inputText, key)
+            let endTime = performance.now() 
             setResult(encryptedText)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
         }
         else if(algorithm === 'gdes'){
+            let startTime = performance.now()
             let g = new GDES(props.inputText, key)
+            let endTime = performance.now() 
             setResult(g.encryptedTextHex)
+            let duration = (endTime - startTime).toFixed(2)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}"   Input:"${props.inputText}"   Output:"${g.encryptedTextHex}" Duration ${duration}ms \n`)
         }
    
     }
@@ -63,9 +76,22 @@ const Cryptography = (props) => {
                 id="outlined-read-only-input"
                 label="Result"
                 value={result}
-                // className={classes.textField}
                 margin="normal"
                 multiline
+                InputProps={{
+                    readOnly: true,
+                }}
+                variant="outlined"
+            /><br />
+            <TextField
+                id="outlined-read-only-input"
+                label="Logs"
+                value={logs}
+                style={{marginTop:'50px'}}
+                margin="normal"
+                multiline
+                fullWidth
+                rowsMax={18}
                 InputProps={{
                     readOnly: true,
                 }}
