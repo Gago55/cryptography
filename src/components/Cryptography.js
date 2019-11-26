@@ -137,7 +137,7 @@ const Cryptography = (props) => {
             {  
                 needKey && <TextField id="standard-basic" label="Input Key" value={key} onChange={handleKeyInputChange} />
             }<br />
-            <Button style={{ margin: '15px' }} onClick={handleButtonClick}>Encrypt</Button><br />
+            <Button style={{ margin: '15px' }} onClick={handleButtonClick}>{needKey ? "Encrypt" : "Hash"}</Button><br />
             <TextField
                 id="outlined-read-only-input"
                 label="Result"
