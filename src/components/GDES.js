@@ -8,6 +8,12 @@ class GDES {
         57, 49, 41, 33, 25, 17, 9, 1, 59, 51, 43, 35, 27, 19, 11, 3,
         61, 53, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7
     ]
+    FPTable = [
+        40,	8 ,	48,	16,	56,	24,	64,	32,	39,	7 ,	47,	15,	55,	23,	63,	31,
+        38,	6 ,	46,	14,	54,	22,	62,	30,	37,	5 ,	45,	13,	53,	21,	61,	29,
+        36,	4 ,	44,	12,	52,	20,	60,	28,	35,	3 ,	43,	11,	51,	19,	59,	27,
+        34,	2 ,	42,	10,	50,	18,	58,	26,	33,	1 ,	41,	9 ,	49,	17,	57,	25
+    ]
 
     Key64To28Table1 = [
         57, 49, 41, 33, 25, 17, 9 , 1 , 58, 50, 42, 34, 26, 18,
@@ -103,6 +109,8 @@ class GDES {
     lText //Array which contain fisrt part of text
     rtext //Array which contain second part of text
 
+    encryptedText
+
     constructor(text, key) {
         this.text = text
         this.key = key
@@ -123,12 +131,27 @@ class GDES {
         //Spliting Text
         this.splitText()
 
-        //=====
+        //Encription
         for (let i = 0 ; i < 16 ; i++){//16 Rounds
-            this.functionFeistel(this.rText , this.allKeys[i])
+            if(i !== 15){
+                let tmp = this.rText
+                let fResult = this.functionFeistel(this.rText , this.allKeys[i])
+                this.rText = this.xorReturnArray(this.lText , fResult)
+                this.lText = tmp
+            }
+            else{//Last Round
+                let fResult = this.functionFeistel(this.rText , this.allKeys[i])
+                this.lText = this.xorReturnArray(this.lText , fResult)
+            }
         }
 
+        //Joining parts of text
+        let encryptedText = [...this.lText , ...this.rText]
 
+        //Final Permutation
+        this.encryptedText = this.finalPermutation(encryptedText)
+        this.encryptedText = this.encryptedText.join('')
+           
     }
 
     textToBin = text => {
@@ -152,6 +175,13 @@ class GDES {
             initialText[i] = this.binarText.join("").charAt(this.IPTable[i] - 1)
         }
         return initialText
+    }
+    finalPermutation = (text) =>{
+        let finalText = new Array(64)
+        for (let i = 0 ; i < 64 ; i++){
+            finalText[i] = text.join('').charAt(this.FPTable[i] -1)
+        }
+        return finalText
     }
     key64to28 = (table) =>{
         let key28 = new Array(28)
@@ -203,9 +233,9 @@ class GDES {
         }
     }
 
-    functionFeistel = ( rText , key) =>{
+    functionFeistel = ( rText , key) =>{//return array
         let rText48  = this.E(rText)
-        let s = this.xor(rText48 , key)
+        let s = this.xorReturnString(rText48 , key)
         let splitedS = s.match(/.{1,6}/g) //split s into 8 chunks 
         let sResult = ''
         
@@ -249,7 +279,7 @@ class GDES {
         return text48
     }
 
-    xor = (a , b ) =>{ //a and b are arrays
+    xorReturnString = (a , b ) =>{ //a and b are arrays
         let c = ''
 
         a = a.join('')
@@ -257,6 +287,18 @@ class GDES {
 
         for (let i = 0 ; i < a.length ; i++){
             c += a[i] ^ b[i]
+        }
+
+        return c
+    }
+    xorReturnArray = (a , b ) =>{ //a and b are arrays
+        let c = new Array(a.length)
+
+        a = a.join('')
+        b = b.join('')
+
+        for (let i = 0 ; i < a.length ; i++){
+            c[i] = a[i] ^ b[i]
         }
 
         return c
