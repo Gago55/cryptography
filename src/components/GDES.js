@@ -163,11 +163,18 @@ class GDES {
     textToBin = text => {
         let binText = new Array(text.length)
         for (let i = 0; i < text.length; i++) {
-            binText[i] = 0 + "" + text.charCodeAt(i).toString(2) //text.charCodeAt(i) return ASCII code of letter
+            let zeros = ''
+            if (text.charCodeAt(i).toString(2).length % 8 !== 0) {
+                let count = 8 - (text.charCodeAt(i).toString(2).length % 8)
+                for (let i = 0; i < count; i++) {
+                    zeros += '0'
+                }
+            }
+            binText[i] = zeros + text.charCodeAt(i).toString(2) //text.charCodeAt(i) return ASCII code of letter
         }
 
         if (binText.length % 8 !== 0) {
-            let count = 8 - (8 % 5)
+            let count = 8 - (binText.length % 8)
             for (let i = 0; i < count; i++) {
                 binText.push('00000000')
             }
