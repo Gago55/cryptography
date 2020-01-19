@@ -36,80 +36,71 @@ const Cryptography = (props) => {
         setKey(event.target.value)
     }
 
-    const handleButtonClick = () => {          
+    const handleButtonClick = () => {
+        let duration , newResult
+
         if (algorithm === 'des') {
             let startTime = performance.now()
-            let encryptedText = CryptoJS.DES.encrypt(props.inputText, key)
+            newResult = CryptoJS.DES.encrypt(props.inputText, key)
             let endTime = performance.now() 
-            setResult(encryptedText)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'tripledes'){
             let startTime = performance.now()
-            let encryptedText = CryptoJS.TripleDES.encrypt(props.inputText, key)
+            newResult = CryptoJS.TripleDES.encrypt(props.inputText, key)
             let endTime = performance.now() 
-            setResult(encryptedText)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'gdes'){
             let startTime = performance.now()
             let g = new GDES(props.inputText, key)
             let endTime = performance.now() 
-            setResult(g.encryptedTextHex)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${g.encryptedTextHex}" Duration ${duration}ms \n`)
+            newResult = g.encryptedTextHex
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'aes'){
             let startTime = performance.now()
-            let encryptedText = CryptoJS.AES.encrypt(props.inputText, key)
+            newResult = CryptoJS.AES.encrypt(props.inputText, key)
             let endTime = performance.now() 
-            setResult(encryptedText)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'rabbit'){
             let startTime = performance.now()
-            let encryptedText = CryptoJS.Rabbit.encrypt(props.inputText, key)
+            newResult = CryptoJS.Rabbit.encrypt(props.inputText, key)
             let endTime = performance.now() 
-            setResult(encryptedText)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${encryptedText}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'md5'){
             let startTime = performance.now()
-            let hash = CryptoJS.MD5(props.inputText)
+            newResult = CryptoJS.MD5(props.inputText)
             let endTime = performance.now() 
-            setResult(hash)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'sha1'){
             let startTime = performance.now()
-            let hash = CryptoJS.SHA1(props.inputText)
+            newResult = CryptoJS.SHA1(props.inputText)
             let endTime = performance.now() 
-            setResult(hash)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'sha256'){
             let startTime = performance.now()
-            let hash = CryptoJS.SHA256(props.inputText)
+            newResult = CryptoJS.SHA256(props.inputText)
             let endTime = performance.now() 
-            setResult(hash)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
         else if(algorithm === 'sha512'){
             let startTime = performance.now()
-            let hash = CryptoJS.SHA512(props.inputText)
+            newResult = CryptoJS.SHA512(props.inputText)
             let endTime = performance.now() 
-            setResult(hash)
-            let duration = (endTime - startTime).toFixed(2)
-            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${hash}" Duration ${duration}ms \n`)
+            duration = (endTime - startTime).toFixed(2)
         }
    
+        setResult(newResult)
+
+        if(needKey)
+            setLogs(logs + `${algorithm.toUpperCase()} --> Key:"${key}" Input:"${props.inputText}"   Output:"${newResult}" Duration ${duration}ms \n`)
+        else
+            setLogs(logs + `${algorithm.toUpperCase()} --> Input:"${props.inputText}"   Hash:"${newResult}" Duration ${duration}ms \n`)
     }
 
     return (
